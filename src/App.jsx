@@ -143,7 +143,7 @@ export default function App() {
           <div style={{ fontSize: 11, letterSpacing: "0.4em", color: "#C8A96E", fontFamily: "'DM Mono',monospace", textTransform: "uppercase", marginBottom: 10 }}>FifteenConsult</div>
           <h1 style={{ fontSize: 48, fontWeight: 300, color: "#E8E4D9", lineHeight: 1.1, letterSpacing: "-0.02em" }}>The Fifteen Framework</h1>
           <div style={{ width: 50, height: 1, background: "linear-gradient(90deg,transparent,#C8A96E,transparent)", margin: "14px auto" }} />
-          <p style={{ fontSize: 14, color: "#555", fontFamily: "'DM Mono',monospace", fontWeight: 300, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Five stages. Fifteen pillars. One story.<br />From discovery to measurable growth.</p>
+          <p style={{ fontSize: 15, color: "#8a8a8a", fontFamily: "'DM Mono',monospace", fontWeight: 300, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Five stages. Fifteen pillars. One story.<br />From discovery to measurable growth.</p>
         </div>
 
         {/* Navigation Tabs */}
@@ -185,13 +185,13 @@ export default function App() {
               {!activeStage ? (
                 <div>
                   <div style={{ fontSize: 11, letterSpacing: "0.3em", color: "#C8A96E", fontFamily: "'DM Mono',monospace", textTransform: "uppercase", marginBottom: 14 }}>Select a stage</div>
-                  <p style={{ fontSize: 17, color: "#555", lineHeight: 1.8, fontWeight: 300, maxWidth: 440 }}>Click any node to explore the three pillars within each stage. Together, the five stages form a continuous cycle — Diagnose feeds back into Discover, and the system compounds with every rotation.</p>
+                  <p style={{ fontSize: 17, color: "#8a8a8a", lineHeight: 1.8, fontWeight: 300, maxWidth: 440 }}>Click any node to explore the three pillars within each stage. Together, the five stages form a continuous cycle — Diagnose feeds back into Discover, and the system compounds with every rotation.</p>
                   <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 10 }}>
                     {STAGES.map(s => (
                       <div key={s.id} onClick={() => setActive(s.id)} style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer", padding: "8px 12px", borderRadius: 3, border: "1px solid #141e30", transition: "all 0.25s" }} onMouseEnter={e => e.currentTarget.style.borderColor = "#C8A96E33"} onMouseLeave={e => e.currentTarget.style.borderColor = "#141e30"}>
                         <span style={{ fontSize: 10, color: s.color, fontFamily: "'DM Mono',monospace", opacity: 0.5, width: 20 }}>{s.num}</span>
                         <span style={{ fontSize: 15, color: "#E8E4D9", fontWeight: 400 }}>{s.name}</span>
-                        <span style={{ fontSize: 11, color: "#444", fontFamily: "'DM Mono',monospace", marginLeft: "auto" }}>{s.verb}</span>
+                        <span style={{ fontSize: 11, color: "#7a7a7a", fontFamily: "'DM Mono',monospace", marginLeft: "auto" }}>{s.verb}</span>
                       </div>
                     ))}
                   </div>
@@ -202,12 +202,12 @@ export default function App() {
                     <span style={{ fontSize: 42, fontWeight: 300, color: activeStage.color, fontFamily: "'DM Mono',monospace", opacity: 0.35, lineHeight: 1 }}>{activeStage.num}</span>
                     <h2 style={{ fontSize: 32, fontWeight: 400, color: "#E8E4D9", letterSpacing: "-0.01em" }}>{activeStage.name}</h2>
                   </div>
-                  <div style={{ fontSize: 12, color: activeStage.color, fontFamily: "'DM Mono',monospace", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>{activeStage.verb}</div>
-                  <p style={{ fontSize: 14, color: "#666", lineHeight: 1.8, fontWeight: 300, marginBottom: 14, maxWidth: 440 }}>{activeStage.description}</p>
+                  <div style={{ fontSize: 13, color: activeStage.color, fontFamily: "'DM Mono',monospace", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>{activeStage.verb}</div>
+                  <p style={{ fontSize: 15, color: "#929292", lineHeight: 1.8, fontWeight: 300, marginBottom: 14, maxWidth: 440 }}>{activeStage.description}</p>
                   {/* Proof snippet */}
                   <div style={{ padding: "10px 14px", borderLeft: `2px solid ${activeStage.color}33`, marginBottom: 20, background: "#0d1424" }}>
                     <div style={{ fontSize: 9, color: activeStage.color, fontFamily: "'DM Mono',monospace", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 4, opacity: 0.7 }}>In practice</div>
-                    <p style={{ fontSize: 13, color: "#555", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>{activeStage.proof}</p>
+                    <p style={{ fontSize: 15, color: "#8a8a8a", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>{activeStage.proof}</p>
                   </div>
                   {/* Pillars */}
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -226,17 +226,17 @@ export default function App() {
                             <span style={{ fontSize: 15, color: "#E8E4D9", fontWeight: 500 }}>{p.name}</span>
                             <span style={{ marginLeft: "auto", fontSize: 10, color: "#333", transition: "transform 0.3s", transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}>▸</span>
                           </div>
-                          <p style={{ fontSize: 12, color: "#555", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.6, marginTop: 4 }}>{p.desc}</p>
+                          <p style={{ fontSize: 13, color: "#8a8a8a", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.6, marginTop: 4 }}>{p.desc}</p>
                           {isExpanded && (
                             <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #1a2236", animation: "fadeIn 0.3s ease" }}>
-                              <p style={{ fontSize: 13, color: "#777", lineHeight: 1.8, fontWeight: 300 }}>{p.detail}</p>
+                              <p style={{ fontSize: 15, color: "#9a9a9a", lineHeight: 1.8, fontWeight: 300 }}>{p.detail}</p>
                             </div>
                           )}
                         </div>
                       );
                     })}
                   </div>
-                  <button onClick={() => { setActive(null); setExpandedPillar(null); }} style={{ marginTop: 18, background: "none", border: "1px solid #1a2236", color: "#444", padding: "5px 14px", fontSize: 10, fontFamily: "'DM Mono',monospace", letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer", borderRadius: 2 }}>Back to overview</button>
+                  <button onClick={() => { setActive(null); setExpandedPillar(null); }} style={{ marginTop: 18, background: "none", border: "1px solid #1a2236", color: "#7a7a7a", padding: "5px 14px", fontSize: 10, fontFamily: "'DM Mono',monospace", letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer", borderRadius: 2 }}>Back to overview</button>
                 </div>
               )}
             </div>
@@ -248,7 +248,7 @@ export default function App() {
           <div style={{ animation: "fadeUp 0.4s ease", maxWidth: 860, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <h2 style={{ fontSize: 28, fontWeight: 300, color: "#E8E4D9", marginBottom: 6 }}>The 15 Metrics That Matter</h2>
-              <p style={{ fontSize: 13, color: "#555", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>Every engagement tracks only these fifteen. No vanity metrics. No dashboard bloat.<br />Click any metric to see why it earns its place.</p>
+              <p style={{ fontSize: 15, color: "#8a8a8a", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>Every engagement tracks only these fifteen. No vanity metrics. No dashboard bloat.<br />Click any metric to see why it earns its place.</p>
             </div>
             {["revenue", "conversion", "engagement"].map(cat => (
               <div key={cat} style={{ marginBottom: 28 }}>
@@ -269,7 +269,7 @@ export default function App() {
                           <span style={{ marginLeft: "auto", fontSize: 10, color: "#333", transform: isActive ? "rotate(90deg)" : "rotate(0)", transition: "transform 0.3s" }}>▸</span>
                         </div>
                         {isActive && (
-                          <p style={{ marginTop: 8, fontSize: 13, color: "#666", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.8, paddingLeft: 28, animation: "fadeIn 0.3s ease" }}>{m.desc}</p>
+                          <p style={{ marginTop: 8, fontSize: 15, color: "#929292", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.8, paddingLeft: 28, animation: "fadeIn 0.3s ease" }}>{m.desc}</p>
                         )}
                       </div>
                     );
@@ -285,7 +285,7 @@ export default function App() {
           <div style={{ animation: "fadeUp 0.4s ease", maxWidth: 800, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <h2 style={{ fontSize: 28, fontWeight: 300, color: "#E8E4D9", marginBottom: 6 }}>How It Works</h2>
-              <p style={{ fontSize: 13, color: "#555", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>The Fifteen Framework is a continuous cycle. Each stage builds on the last.<br />Diagnose feeds back into Discover. The system compounds with every rotation.</p>
+              <p style={{ fontSize: 15, color: "#8a8a8a", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7 }}>The Fifteen Framework is a continuous cycle. Each stage builds on the last.<br />Diagnose feeds back into Discover. The system compounds with every rotation.</p>
             </div>
             {STAGES.map((s, i) => (
               <div key={s.id} style={{ display: "flex", gap: 20, marginBottom: 32, animation: "fadeUp 0.4s ease forwards", animationDelay: `${i * 0.1}s`, opacity: 0 }}>
@@ -297,14 +297,14 @@ export default function App() {
                 <div style={{ flex: 1, paddingBottom: 16, borderBottom: i < 4 ? "1px solid #141e30" : "none" }}>
                   <h3 style={{ fontSize: 22, fontWeight: 400, color: "#E8E4D9", marginBottom: 2 }}>{s.name}</h3>
                   <div style={{ fontSize: 11, color: s.color, fontFamily: "'DM Mono',monospace", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>{s.verb}</div>
-                  <p style={{ fontSize: 14, color: "#666", lineHeight: 1.8, fontWeight: 300, marginBottom: 12 }}>{s.description}</p>
+                  <p style={{ fontSize: 15, color: "#929292", lineHeight: 1.8, fontWeight: 300, marginBottom: 12 }}>{s.description}</p>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {s.pillars.map(p => (
-                      <span key={p.name} style={{ fontSize: 11, color: "#555", padding: "4px 10px", border: "1px solid #1a2236", borderRadius: 2, fontFamily: "'DM Mono',monospace" }}>{p.name}</span>
+                      <span key={p.name} style={{ fontSize: 11, color: "#8a8a8a", padding: "4px 10px", border: "1px solid #1a2236", borderRadius: 2, fontFamily: "'DM Mono',monospace" }}>{p.name}</span>
                     ))}
                   </div>
                   <div style={{ marginTop: 10, padding: "8px 12px", borderLeft: `2px solid ${s.color}22`, background: "#0c1220" }}>
-                    <p style={{ fontSize: 12, color: "#444", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7, fontStyle: "italic" }}>{s.proof}</p>
+                    <p style={{ fontSize: 13, color: "#7a7a7a", fontFamily: "'DM Mono',monospace", fontWeight: 300, lineHeight: 1.7, fontStyle: "italic" }}>{s.proof}</p>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function App() {
         <div style={{ marginTop: 28, padding: "20px 0", borderTop: "1px solid #141e30", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 1s" }}>
           {STAGES.map((s, i) => (
             <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span onClick={() => { setView("framework"); setActive(s.id); setExpandedPillar(null); }} style={{ fontSize: 12, color: active === s.id && view === "framework" ? s.color : "#333", cursor: "pointer", fontWeight: active === s.id ? 600 : 300, transition: "all 0.3s" }}>{s.name}</span>
+              <span onClick={() => { setView("framework"); setActive(s.id); setExpandedPillar(null); }} style={{ fontSize: 13, color: active === s.id && view === "framework" ? s.color : "#333", cursor: "pointer", fontWeight: active === s.id ? 600 : 300, transition: "all 0.3s" }}>{s.name}</span>
               {i < 4 && <span style={{ color: "#1e2a3a", fontSize: 9 }}>→</span>}
               {i === 4 && <span style={{ color: "#1e2a3a", fontSize: 9, marginLeft: 3 }}>↻</span>}
             </div>
