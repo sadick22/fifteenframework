@@ -15,10 +15,11 @@ export default function App() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        @media print { .no-print { display: none !important; } }
       `}</style>
 
       {/* Sticky top nav */}
-      <nav style={{
+      <nav className="no-print" style={{
         display: "flex", justifyContent: "center", gap: 8, padding: "16px",
         borderBottom: "1px solid #1a1f2e", position: "sticky", top: 0, zIndex: 50,
         background: "rgba(11,17,32,0.85)", backdropFilter: "blur(8px)",
