@@ -100,7 +100,8 @@ export default function FifteenScorecard() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E8E4D9", fontFamily: "'Cormorant Garamond', Georgia, serif", padding: "32px" }}>
+    <>
+    <div className="no-print" style={{ minHeight: "100vh", background: "#0B1120", color: "#E8E4D9", fontFamily: "'Cormorant Garamond', Georgia, serif", padding: "32px" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,6 +115,15 @@ export default function FifteenScorecard() {
         .tab:hover { color:#C8A96E; }
         input { outline:none; }
         input:focus { border-color:#C8A96E; }
+        /* ── PDF / Print report ── */
+        .print-report { display: none; }
+        @media print {
+          @page { size: A4; margin: 14mm; }
+          html, body { background: #fff !important; }
+          .no-print { display: none !important; }
+          .print-report { display: block !important; }
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
       `}</style>
 
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
@@ -234,6 +244,18 @@ export default function FifteenScorecard() {
         {/* ═══ RESULTS VIEW ═══ */}
         {view === "results" && (
           <div style={{ animation: "fadeUp 0.4s ease" }}>
+            {/* Download PDF button */}
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
+              <button onClick={() => window.print()} disabled={!isComplete} style={{
+                background: isComplete ? "#C8A96E" : "#141e30",
+                color: isComplete ? "#0B1120" : "#555",
+                border: "none", padding: "10px 22px", fontSize: 11,
+                fontFamily: "'DM Mono', monospace", letterSpacing: "0.15em",
+                textTransform: "uppercase", borderRadius: 3, fontWeight: 600,
+                cursor: isComplete ? "pointer" : "not-allowed",
+              }}>↓ Download PDF Report</button>
+            </div>
+
             {/* Client header */}
             {(clientName || clientIndustry) && (
               <div style={{ textAlign: "center", marginBottom: 24 }}>
@@ -396,5 +418,121 @@ export default function FifteenScorecard() {
         </div>
       </div>
     </div>
+
+      {/* ───── PDF REPORT (hidden on screen, shown when printing) ───── */}
+      <div className="print-report" style={{
+        background: "#fff", color: "#1a1a1a",
+        fontFamily: "'Cormorant Garamond', Georgia, serif",
+        WebkitPrintColorAdjust: "exact", printColorAdjust: "exact",
+      }}>
+        {/* Header */}
+        <div style={{ borderBottom: "2px solid #C8A96E", paddingBottom: 16, marginBottom: 22 }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.35em", color: "#9C7B3D", fontFamily: "'DM Mono', monospace", textTransform: "uppercase", marginBottom: 10 }}>FifteenConsult</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+            <div>
+              <h1 style={{ fontSize: 34, fontWeight: 400, color: "#1a1a1a", lineHeight: 1 }}>The Fifteen Scorecard</h1>
+              <div style={{ fontSize: 15, color: "#555", marginTop: 6 }}>
+                {clientName || "Client Assessment"}{clientIndustry ? ` · ${clientIndustry}` : ""}
+              </div>
+            </div>
+            <div style={{ textAlign: "right", fontSize: 11, color: "#888", fontFamily: "'DM Mono', monospace" }}>
+              {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+            </div>
+          </div>
+        </div>
+
+        {/* Hero: overall score + radar */}
+        <div style={{ display: "flex", gap: 28, alignItems: "center", marginBottom: 26, pageBreakInside: "avoid" }}>
+          <div style={{ width: 280, flexShrink: 0 }}>
+            <svg viewBox="0 0 400 400" style={{ width: "100%" }}>
+              {[1, 2, 3, 4, 5].map(level => {
+                const r = (level / 5) * chartR;
+                const points = [0, 1, 2, 3, 4].map(i => getChartPos(i, r)).map(p => `${p.x},${p.y}`).join(" ");
+                return <polygon key={level} points={points} fill="none" stroke="#E2E2E2" strokeWidth={level === 5 ? 1 : 0.5} />;
+              })}
+              {[0, 1, 2, 3, 4].map(i => { const p = getChartPos(i, chartR); return <line key={i} x1={chartCx} y1={chartCy} x2={p.x} y2={p.y} stroke="#E2E2E2" strokeWidth="0.5" />; })}
+              {(() => {
+                const points = compositeScores.map((c, i) => getChartPos(i, (c.avg / 5) * chartR)).map(p => `${p.x},${p.y}`).join(" ");
+                return (<>
+                  <polygon points={points} fill="rgba(200,169,110,0.20)" stroke="#9C7B3D" strokeWidth="2" />
+                  {compositeScores.map((c, i) => { const pos = getChartPos(i, (c.avg / 5) * chartR); return <circle key={i} cx={pos.x} cy={pos.y} r="4" fill={c.color} stroke="#fff" strokeWidth="2" />; })}
+                </>);
+              })()}
+              {compositeScores.map((c, i) => { const pos = getChartPos(i, chartR + 30); return (
+                <g key={c.id}>
+                  <text x={pos.x} y={pos.y - 4} textAnchor="middle" fill="#1a1a1a" fontSize="13" fontFamily="Cormorant Garamond,serif" fontWeight="600">{c.stage}</text>
+                  <text x={pos.x} y={pos.y + 12} textAnchor="middle" fill="#9C7B3D" fontSize="13" fontFamily="DM Mono,monospace" fontWeight="600">{c.avg}</text>
+                </g>); })}
+            </svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.25em", color: "#9C7B3D", fontFamily: "'DM Mono', monospace", textTransform: "uppercase", marginBottom: 6 }}>Overall Fifteen Score</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+              <span style={{ fontSize: 72, fontWeight: 300, color: "#1a1a1a", lineHeight: 1 }}>{overallScore}</span>
+              <span style={{ fontSize: 28, color: "#bbb", fontWeight: 300 }}>/ 5</span>
+            </div>
+            <p style={{ fontSize: 15, color: "#555", lineHeight: 1.7, marginTop: 12, maxWidth: 340 }}>
+              {overallScore >= 4 ? "A strong strategic foundation. The work now is optimisation and protection."
+                : overallScore >= 3 ? "A working foundation with clear, addressable gaps."
+                : "Significant strategic infrastructure remains to be built."}
+            </p>
+          </div>
+        </div>
+
+        {/* Score breakdown */}
+        <div style={{ marginBottom: 24, pageBreakInside: "avoid" }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.25em", color: "#9C7B3D", fontFamily: "'DM Mono', monospace", textTransform: "uppercase", marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 6 }}>Score Breakdown</div>
+          {compositeScores.map(c => (
+            <div key={c.id} style={{ marginBottom: 12 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                <span style={{ fontSize: 15, color: "#1a1a1a" }}>{c.name}</span>
+                <span style={{ fontSize: 15, color: "#9C7B3D", fontFamily: "'DM Mono', monospace", fontWeight: 600 }}>{c.avg}<span style={{ color: "#bbb" }}> / 5</span></span>
+              </div>
+              <div style={{ height: 6, background: "#EFEFEF", borderRadius: 3 }}>
+                <div style={{ width: `${(c.avg / 5) * 100}%`, height: "100%", background: c.color, borderRadius: 3 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Priority actions */}
+        <div style={{ marginBottom: 24, pageBreakInside: "avoid" }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.25em", color: "#9C7B3D", fontFamily: "'DM Mono', monospace", textTransform: "uppercase", marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 6 }}>Priority Actions</div>
+          {priorities.map((p, i) => {
+            const pInfo = PRIORITY_MAP[Math.round(p.avg)] || PRIORITY_MAP[1];
+            return (
+              <div key={p.id} style={{ display: "flex", alignItems: "baseline", gap: 10, padding: "8px 0", borderBottom: i < priorities.length - 1 ? "1px solid #F2F2F2" : "none" }}>
+                <span style={{ fontSize: 11, color: "#9C7B3D", fontFamily: "'DM Mono', monospace", fontWeight: 600, width: 24 }}>P{i + 1}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500 }}>{p.name}</span>
+                    <span style={{ fontSize: 12, color: pInfo.color, fontFamily: "'DM Mono', monospace" }}>{pInfo.label} · {p.avg}/5</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: "#777", fontFamily: "'DM Mono', monospace", marginTop: 2 }}>{pInfo.action}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Recommendation */}
+        <div style={{ padding: "16px 18px", background: "#FAF7F0", border: "1px solid #EADFC6", borderRadius: 4, marginBottom: 22, pageBreakInside: "avoid" }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.25em", color: "#9C7B3D", fontFamily: "'DM Mono', monospace", textTransform: "uppercase", marginBottom: 8 }}>Recommendation</div>
+          <p style={{ fontSize: 15, color: "#333", lineHeight: 1.8, fontWeight: 300 }}>
+            {overallScore >= 4
+              ? `${clientName || "This business"} scores ${overallScore}/5 overall — a strong foundation. The opportunity is in optimising ${priorities[0]?.name} (${priorities[0]?.avg}/5) to close the gap between good and exceptional.`
+              : overallScore >= 3
+              ? `${clientName || "This business"} scores ${overallScore}/5 overall — the foundation exists but critical gaps remain. The immediate priority is ${priorities[0]?.name} (${priorities[0]?.avg}/5), followed by ${priorities[1]?.name} (${priorities[1]?.avg}/5).`
+              : `${clientName || "This business"} scores ${overallScore}/5 overall — significant strategic infrastructure needs to be built. The most urgent gap is ${priorities[0]?.name} (${priorities[0]?.avg}/5). Without addressing this, other marketing investments will underperform.`}
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div style={{ borderTop: "2px solid #C8A96E", paddingTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 11, color: "#9C7B3D", fontFamily: "'DM Mono', monospace", letterSpacing: "0.08em" }}>fifteenconsult.com</span>
+          <span style={{ fontSize: 10, color: "#aaa", fontFamily: "'DM Mono', monospace", letterSpacing: "0.15em", textTransform: "uppercase" }}>Storytelling as Strategic Infrastructure</span>
+        </div>
+      </div>
+    </>
   );
 }
